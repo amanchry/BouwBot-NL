@@ -12,7 +12,7 @@ BouwBot NL supports a controlled set of interpretable queries, mapped to explici
 Tool utilized 3DBAG open source building data set and ChatGPT API 
 
 ## Example queries:
-** For this demo, analysis is currently limited to Utrecht to keep data size, performance, and computational complexity manageable.**
+**For this demo, analysis is currently limited to Utrecht to keep data size, performance, and computational complexity manageable.**
 
 - Show Utrecht Maliebaan on the map
 - Draw a 500 meter buffer around selected location
