@@ -33,7 +33,7 @@ Key characteristics:
 > ❌ Questions outside these categories (prices, predictions, energy use, zoning laws, etc.) are **not supported** in this demo.
 
 
-[![BouwBot NL demo](static/demo.png)](static/demo.mp4)
+[![BouwBot NL demo](static/demo.gif)]
 
 
 ---
