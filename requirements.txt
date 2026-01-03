@@ -1,0 +1,11 @@
+Flask
+python-dotenv
+openai
+geopandas
+shapely
+pyproj
+pandas
+numpy
+geopy
+pytest
+tqdm

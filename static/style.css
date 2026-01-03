@@ -1,0 +1,157 @@
+
+html, body {
+  height: 100%;
+}
+
+.col-md-4,
+.col-lg-3 {
+  overflow: hidden;
+}
+
+#map {
+  width: 100%;
+  height: calc(100vh - 50px);
+}
+
+/* Chat bubbles */
+.chat-user {
+  text-align: right;
+}
+
+.chat-user .bubble {
+  background-color: #0d6efd;
+  color: #fff;
+}
+
+
+.left_chat{
+  height: 100vh;
+  overflow-y: auto;
+
+}
+
+
+
+.bubble {
+  display: inline-block;
+  padding: 8px 10px;
+  border-radius: 6px;
+  max-width: 90%;
+}
+/* Chat message layout */
+#chatMessages {
+  overflow-y: auto;
+  height:600px;
+}
+/* Wrapper for each message */
+.chat-user {
+  text-align: right;
+}
+
+/* Message bubble */
+.bubble {
+  display: inline-block;
+  padding: 8px 12px;
+  border-radius: 8px;
+  font-size: 13px;
+  max-width: 90%;
+
+
+}
+
+/* User bubble */
+.chat-user .bubble {
+  background-color: #0d6efd; /* Bootstrap primary */
+  color: #fff;
+  border: none;
+  border-radius: 10px 10px 0px 10px;
+}
+
+/* Assistant bubble */
+.bubble.bg-light {
+  background-color: #f8f9fa;
+  color: #212529;
+    border-radius: 10px 10px 10px 0px;
+}
+
+/* Role label */
+#chatMessages .small {
+  margin-bottom: 2px;
+}
+
+
+.loader-dots span {
+  display: inline-block;
+  width: 6px;
+  height: 6px;
+  margin: 0 2px;
+  background: #6c757d;
+  border-radius: 50%;
+  animation: bounce 1s infinite ease-in-out;
+}
+
+.loader-dots span:nth-child(2) { animation-delay: 0.15s; }
+.loader-dots span:nth-child(3) { animation-delay: 0.3s; }
+
+@keyframes bounce {
+  0%, 80%, 100% { transform: translateY(0); opacity: 0.4; }
+  40% { transform: translateY(-4px); opacity: 1; }
+}
+
+
+
+
+/* OpenLayers popup */
+.ol-popup {
+  position: absolute;
+  background-color: #fff;
+  box-shadow: 0 1px 10px rgba(0,0,0,0.2);
+  padding: 10px 12px;
+  border-radius: 8px;
+  border: 1px solid rgba(0,0,0,0.15);
+  bottom: 12px;
+  left: -50px;
+  min-width: 260px;
+  max-width: 360px;
+  max-height: 300px;
+  overflow: auto;
+  font-size: 0.8rem;
+}
+
+.ol-popup-closer {
+  position: absolute;
+  top: 6px;
+  right: 8px;
+  text-decoration: none;
+  font-size: 18px;
+  color: #666;
+}
+
+.ol-popup-closer:after {
+  content: "✕";
+}
+
+.ol-popup table {
+  margin: 0;
+  width: 100%;
+  border-collapse: collapse;
+}
+.ol-popup td {
+  padding: 4px 6px;
+  border-bottom: 1px solid #eee;
+  vertical-align: top;
+}
+.ol-popup td.key {
+  font-weight: 600;
+  width: 40%;
+  color: #333;
+}
+.ol-popup td.val {
+  color: #444;
+  word-break: break-word;
+}
+
+
+
+
+

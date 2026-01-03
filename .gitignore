@@ -1,0 +1,14 @@
+readme_local.rst
+.env
+venv
+/venv
+
+static/data/*.gpkg
+static/data/*.zip
+
+.pytest_cache
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db
+.ipynb_checkpoints/
