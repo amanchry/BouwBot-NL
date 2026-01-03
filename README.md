@@ -116,7 +116,7 @@ python app.py
 BouwBot NL is designed as a **tool-driven conversational geospatial system**.  
 Rather than generating answers directly, the AI assistant **routes user queries to explicit spatial analysis tools**, ensuring transparency, reproducibility, and correctness.
 
-### 5.1 High-level architecture
+### High-level architecture
 
 The system consists of five main components:
 ```
@@ -149,7 +149,6 @@ The system consists of five main components:
 - **Meter-accurate analysis:** calculations use EPSG:28992 (RD New)
 - **Lightweight frontend:** large geometries are loaded via GeoJSON URLs
 
----
 
 ### Current limitations
 
