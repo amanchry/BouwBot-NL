@@ -12,3 +12,4 @@ static/data/*.zip
 .DS_Store
 Thumbs.db
 .ipynb_checkpoints/
+output/*

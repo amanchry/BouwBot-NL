@@ -3,7 +3,7 @@
 
 from shapely.geometry import Point
 from pyproj import Transformer
-import tools.utrecht_buildings as tb
+import tools.buildings_analysis as tb
 
 
 def rd_to_wgs84(x, y):

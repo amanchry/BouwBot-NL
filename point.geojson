@@ -1,0 +1,15 @@
+{
+  "type": "FeatureCollection",
+  "features": [
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "Utrecht Point"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [5.120493737142752, 52.08586856050212]
+      }
+    }
+  ]
+}

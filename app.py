@@ -18,6 +18,9 @@ app = Flask(__name__)
 app.secret_key = os.getenv("FLASK_SECRET_KEY")
 
 client = OpenAI(api_key=os.getenv("OPENAI_API_KEY"))
+ai_model='gpt-4o-mini'
+
+
 
 OUTPUT_DIR = os.path.join(app.root_path, "output")
 
@@ -35,6 +38,7 @@ Your role:
 - NEVER hallucinate results.
 - NEVER answer questions outside the supported functions.
 - Perform spatial analysis tasks using predefined tools (functions).
+- Don't provide any link to download analyzed data/GeoJOSN Data.
 
 If a query is unsupported or outside the Netherlands:
 - Politely reject it and explain the limitation.
@@ -84,22 +88,89 @@ def apply_map_from_tool_result(tool_result: dict) -> bool:
 
     return False
 
-def chat_with_bouwbot(messages: list[dict]) -> tuple[str, bool]:
+# def chat_with_bouwbot(messages: list[dict]) -> tuple[str, bool]:
+#     map_updated = False
+
+#     response = client.chat.completions.create(
+#         model=ai_model,
+#         # messages=messages,
+#         tools=geospatial_tools,
+#         tool_choice="auto",
+#         temperature=0.2,
+#         max_tokens=500,
+#     )
+
+#     msg = response.choices[0].message
+#     print("msg",msg)
+
+#     if not getattr(msg, "tool_calls", None):
+#         return (msg.content or "No reply generated.", False)
+
+#     messages.append({
+#         "role": "assistant",
+#         "content": msg.content or "",
+#         "tool_calls": [tc.model_dump() for tc in msg.tool_calls],
+#     })
+
+#     for tc in msg.tool_calls:
+#         function_name = tc.function.name
+#         print("function_name",function_name)
+#         arguments = json.loads(tc.function.arguments or "{}")
+
+#         result = call_tool(function_name, arguments)
+#         print("result",result) 
+
+#         # ✅ record if map was updated by any tool call
+#         if apply_map_from_tool_result(result):
+#             map_updated = True
+
+#         messages.append({
+#             "role": "tool",
+#             "tool_call_id": tc.id,
+#             "name": function_name,
+#             "content": json.dumps(result),
+#         })
+
+#     followup = client.chat.completions.create(
+#         model=ai_model,
+#         messages=messages,
+#         temperature=0.2,
+#         max_tokens=500,
+#     )
+
+#     return (followup.choices[0].message.content or "No content returned.", map_updated)
+
+
+def chat_with_bouwbot(user_text: str) -> tuple[str, bool]:
     map_updated = False
 
+    # --------------------------------------------------
+    # PHASE 1: TOOL DECISION (NO HISTORY)
+    # --------------------------------------------------
+    messages = [
+        {"role": "system", "content": SYSTEM_PROMPT},
+        {"role": "user", "content": user_text},
+    ]
+
     response = client.chat.completions.create(
-        model="gpt-4o-mini",
+        model=ai_model,
         messages=messages,
         tools=geospatial_tools,
         tool_choice="auto",
         temperature=0.2,
-        max_tokens=500,
+        max_tokens=300,
     )
 
     msg = response.choices[0].message
+    print("msg",msg)
 
+    # If no tool call → just return text
     if not getattr(msg, "tool_calls", None):
         return (msg.content or "No reply generated.", False)
+
+    # --------------------------------------------------
+    # Execute tool calls
+    # --------------------------------------------------
 
     messages.append({
         "role": "assistant",
@@ -107,15 +178,16 @@ def chat_with_bouwbot(messages: list[dict]) -> tuple[str, bool]:
         "tool_calls": [tc.model_dump() for tc in msg.tool_calls],
     })
 
+
+
     for tc in msg.tool_calls:
         function_name = tc.function.name
         print("function_name",function_name)
         arguments = json.loads(tc.function.arguments or "{}")
 
         result = call_tool(function_name, arguments)
-        print("result",result) 
+        # print("result",result) 
 
-        # ✅ record if map was updated by any tool call
         if apply_map_from_tool_result(result):
             map_updated = True
 
@@ -126,11 +198,14 @@ def chat_with_bouwbot(messages: list[dict]) -> tuple[str, bool]:
             "content": json.dumps(result),
         })
 
+    # --------------------------------------------------
+    # PHASE 2: FOLLOW-UP RESPONSE (WITH TOOL RESULTS)
+    # --------------------------------------------------
     followup = client.chat.completions.create(
-        model="gpt-4o-mini",
+        model=ai_model,
         messages=messages,
         temperature=0.2,
-        max_tokens=500,
+        max_tokens=400,
     )
 
     return (followup.choices[0].message.content or "No content returned.", map_updated)
@@ -148,7 +223,7 @@ def api_chat():
     ensure_state()
 
     payload = request.get_json(force=True, silent=True) or {}
-    map_context = payload.get("map_context") or {}
+    # map_context = payload.get("map_context") or {}
     # draw_geojson = map_context.get("draw_geojson") 
     user_text = (payload.get("message") or "").strip()
     print("user_text",user_text)
@@ -159,18 +234,18 @@ def api_chat():
         return jsonify({"ok": False, "error": "Empty message"}), 400
 
 
-
     # store user message
     session["messages"].append({"role": "user", "content": user_text})
 
     # build messages
-    messages = [{"role": "system", "content": SYSTEM_PROMPT}]
+    # messages = [{"role": "system", "content": SYSTEM_PROMPT}]
 
 
-    messages.extend(session["messages"])
+    # messages.extend(session["messages"])
 
     # run tool loop
-    assistant_text, map_updated = chat_with_bouwbot(messages)
+    assistant_text, map_updated = chat_with_bouwbot(user_text)
+    # assistant_text, map_updated = chat_with_bouwbot(messages)
     session["messages"].append({"role": "assistant", "content": assistant_text})
     print("map_updated",map_updated)
     print("map_center",session["map_center"])
@@ -200,6 +275,11 @@ def api_chat():
 def serve_generated(filename):
     return send_from_directory(OUTPUT_DIR, filename, mimetype="application/geo+json")
 
+
+@app.get("/api/history")
+def api_history():
+    ensure_state()
+    return jsonify({"ok": True, "messages": session["messages"]})
 
 
 

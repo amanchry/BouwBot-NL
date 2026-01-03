@@ -11,13 +11,18 @@ BouwBot NL supports a controlled set of interpretable queries, mapped to explici
 
 Tool utilized 3DBAG open source building data set and ChatGPT API 
 
-## Example queries: (Utrecht only)
-Show Utrecht Maliebaan on the map
-Draw a 500 meter buffer around Utrecht Maliebaan
-Draw a 500 meter buffer around clicked location
-Show buildings within 300 meters of this point
-Show buildings within 300 meters of Utrecht Maliebaant
-Show buildings higher than 5 meters within 300 meters of Utrecht Maliebaan
+## Example queries:
+** For this demo, analysis is currently limited to Utrecht to keep data size, performance, and computational complexity manageable.**
+
+- Show Utrecht Maliebaan on the map
+- Draw a 500 meter buffer around selected location
+- Show buildings within 300 meters in selected location
+- Show buildings higher than 5 meters within 300 meters in selected location
+- What is the minimum, average, and maximum building height within 500 meters of this point?
+- Give height statistics for buildings within 300 meters of this point
+- Which is the tallest building within 300 meters of this point?
+- What is the average building footprint within 400 meters of this point?
+- What is the total building volume within 500 meters of this point?
 > ❌ Questions outside these categories (prices, predictions, energy use, zoning laws, etc.) are **not supported** in this demo.
 
 

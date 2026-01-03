@@ -3,26 +3,24 @@ from typing import Dict, Any, Callable
 
 
 from tools.functions import (
-    show_location,
+    geocode_location,
     buffer_location,
     buffer_point
 )
-from tools.utrecht_buildings import buildings_within_buffer,buildings_higher_than_within_buffer  
-# height_stats_within_buffer, tallest_building_within_buffer,footprint_stats_within_buffer,total_volume_within_buffer
+from tools.buildings_analysis import buildings_within_buffer,buildings_higher_than_within_buffer , height_stats_within_buffer, tallest_building_within_buffer,footprint_stats_within_buffer,total_volume_within_buffer
 
 
 ToolFn = Callable[..., Dict[str, Any]]
 
 TOOL_REGISTRY: Dict[str, ToolFn] = {
-    "show_location": show_location,
-    "buffer_location": buffer_location,
+    "geocode_location": geocode_location,
      "buffer_point": buffer_point,
     "buildings_within_buffer": buildings_within_buffer,
     "buildings_higher_than_within_buffer": buildings_higher_than_within_buffer,
-    # "height_stats_within_buffer": height_stats_within_buffer,
-    # "tallest_building_within_buffer": tallest_building_within_buffer,
-    # "footprint_stats_within_buffer": footprint_stats_within_buffer,
-    # "total_volume_within_buffer": total_volume_within_buffer,
+    "height_stats_within_buffer": height_stats_within_buffer,
+    "tallest_building_within_buffer": tallest_building_within_buffer,
+    "footprint_stats_within_buffer": footprint_stats_within_buffer,
+    "total_volume_within_buffer": total_volume_within_buffer,
 
 }
 

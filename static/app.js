@@ -12,6 +12,9 @@ const popupCloser = document.getElementById("olPopupCloser");
 
 
 
+
+
+
 function autoResizeTextarea(el, maxRows = 6) {
   const lineHeight = 24; // px (Bootstrap default-ish)
   const maxHeight = lineHeight * maxRows;
@@ -34,6 +37,10 @@ observer.observe(chatInput, {
   attributes: true,
   attributeFilter: ["value"],
 });
+
+function clearChatUI() {
+  chatMessages.innerHTML = "";
+}
 
 
 
@@ -89,7 +96,7 @@ function addLoader() {
   const bubble = document.createElement("div");
   bubble.className = "bubble border bg-light";
   bubble.innerHTML = `
-  <span class="me-2">BouwBot is typing</span>
+  <span class="me-2">BouwBot is thinking..</span>
   <span class="loader-dots"><span></span><span></span><span></span></span>
 `;
 
@@ -203,6 +210,18 @@ function getDrawGeoJSON() {
 
 
 
+function renderMessagesFromServer(msgs) {
+  clearChatUI();
+  for (const m of msgs || []) {
+    // backend roles are usually: "user", "assistant"
+    if (m.role === "user" || m.role === "assistant") {
+      addMessage(m.role, m.content || "");
+    }
+  }
+}
+
+
+
 chatForm.addEventListener("submit", async (e) => {
   e.preventDefault();
   const text = chatInput.value.trim();
@@ -241,7 +260,10 @@ chatForm.addEventListener("submit", async (e) => {
       return;
     }
 
-    addMessage("assistant", data.reply);
+    // addMessage("assistant", data.reply);
+
+    renderMessagesFromServer(data.messages);
+
 
     if (data.map) {
       applyBackendMap(data.map);
@@ -258,6 +280,16 @@ chatForm.addEventListener("submit", async (e) => {
   }
 });
 
+
+(async function loadHistory() {
+  try {
+    const res = await fetch("/api/history");
+    const data = await res.json();
+    if (data.ok) renderMessagesFromServer(data.messages);
+  } catch (e) {
+    console.error("Failed to load history", e);
+  }
+})();
 
 
 
@@ -304,6 +336,35 @@ const backendLayer = new ol.layer.Vector({
     fill: new ol.style.Fill({ color: "rgba(220,53,69,0.15)" }),
   }),
 });
+
+
+// const backendLayer = new ol.layer.Vector({
+//   source: backendSource,
+//   style: (feature) => {
+//     const geomType = feature.getGeometry().getType();
+
+//     if (geomType === "Point") {
+//       return new ol.style.Style({
+//         image: new ol.style.Icon({
+//           src: "/static/marker-red.png", 
+//           anchor: [0.5, 1],      // bottom-center
+//           scale: 0.2,
+//         }),
+//       });
+//     }
+
+//     // 🔴 POLYGON / BUFFER
+//     return new ol.style.Style({
+//       stroke: new ol.style.Stroke({
+//         color: "#dc3545",
+//         width: 2,
+//       }),
+//       fill: new ol.style.Fill({
+//         color: "rgba(220,53,69,0.15)",
+//       }),
+//     });
+//   },
+// });
 
 // BAG3D WFS (initially OFF)
 
@@ -472,6 +533,37 @@ map.addInteraction(modify);
 modify.setActive(false);
 
 
+
+function removeGeoJSONFromChatInput() {
+  const text = chatInput.value || "";
+  if (!text) return;
+
+  // Find first { ... } block that parses as JSON
+  const start = text.indexOf("{");
+  const end = text.lastIndexOf("}");
+
+  if (start === -1 || end === -1 || end <= start) return;
+
+  const candidate = text.slice(start, end + 1);
+
+  try {
+    const parsed = JSON.parse(candidate);
+
+    // Optional: sanity check it's GeoJSON-ish
+    if (parsed.type || parsed.geometry || parsed.features) {
+      chatInput.value = (
+        text.slice(0, start) +
+        text.slice(end + 1)
+      ).trim();
+
+      autoResizeTextarea(chatInput);
+    }
+  } catch (e) {
+    // not valid JSON → do nothing
+  }
+}
+
+
 function clearDrawFeatures() {
   // remove all previous drawings
   drawSource.clear();
@@ -479,6 +571,9 @@ function clearDrawFeatures() {
   // clear selection & stop modify
   select.getFeatures().clear();
   modify.setActive(false);
+
+  removeGeoJSONFromChatInput();
+
 }
 
 
@@ -558,22 +653,49 @@ if (btnDelete) {
   btnDelete.addEventListener("click", () => {
     select.getFeatures().forEach((f) => drawSource.removeFeature(f));
     select.getFeatures().clear();
+
+    removeGeoJSONFromChatInput();
   });
 }
 
-// Export GeoJSON (optional, sends to chat)
-const btnExport = document.getElementById("btnExport");
-if (btnExport) {
-  btnExport.addEventListener("click", () => {
-    const geojson = new ol.format.GeoJSON().writeFeatures(drawSource.getFeatures(), {
-      featureProjection: map.getView().getProjection(),
-      dataProjection: "EPSG:4326",
-    });
 
-    addMessage("assistant", geojson);
-  });
-}
 
 
 // Default draw mode
 setDrawType("None");
+
+
+
+
+const btnClearChat = document.getElementById("btnClearChat");
+
+if (btnClearChat) {
+  btnClearChat.addEventListener("click", async () => {
+    // Optional confirmation
+    if (!confirm("Clear chat history and map?")) return;
+
+    try {
+      await fetch("/api/reset", { method: "POST" });
+
+      // ✅ clear chat UI
+      chatMessages.innerHTML = "";
+
+      // ✅ clear input
+      chatInput.value = "";
+      autoResizeTextarea(chatInput);
+
+      // ✅ clear map layers
+      backendSource.clear();
+      drawSource.clear();
+
+      // Optional: reset map view
+      map.getView().setCenter(ol.proj.fromLonLat([5.1214, 52.0907]));
+      map.getView().setZoom(11);
+
+    } catch (err) {
+      console.error("Failed to reset chat", err);
+      alert("Failed to clear chat");
+    }
+  });
+}
+
