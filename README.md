@@ -136,22 +136,17 @@ The system consists of five main components:
 
 **Flask**  
 Flask is a lightweight Python web framework used to build the backend API, manage user sessions, and serve generated GeoJSON outputs.
-
-Documentation:  
-https://flask.palletsprojects.com/
+Documentation: https://flask.palletsprojects.com/
 
 
 **OpenAI API**  
 The OpenAI Chat Completions API is used to interpret user queries and route them to predefined geospatial tools via function calling. 
-
-Documentation:  
-https://platform.openai.com/docs/guides/function-calling
+Documentation: https://platform.openai.com/docs/guides/function-calling
 
 
 **OpenLayers**  
 OpenLayers is a JavaScript mapping library used for rendering the interactive map.
-Documentation:  
-https://openlayers.org/
+Documentation: https://openlayers.org/
 
 
 
