@@ -13,3 +13,7 @@ static/data/*.zip
 Thumbs.db
 .ipynb_checkpoints/
 output/*
+__pycache__
+
+tools/__pycache__
+tests/__pycache__
