@@ -176,6 +176,10 @@
   Clear chat history
 </button>
 
+                    <button id="btnExportMap" class="btn btn-sm btn-success" title="Export map as PNG">
+                        <i class="bi bi-download"></i> Export Map
+                    </button>
+
 
 
                 </div>
@@ -197,6 +201,9 @@
 
         </div>
     </div>
+
+    <!-- html2canvas for map export -->
+    <script src="https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js"></script>
 
     <!-- App JS -->
     <script src="{{ url_for('static', filename='app.js') }}"></script>

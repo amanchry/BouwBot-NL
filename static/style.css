@@ -152,6 +152,128 @@ html, body {
   word-break: break-word;
 }
 
+/* Map Export Overlays */
+.export-north-arrow {
+  position: absolute;
+  top: 60px;  /* Shifted down from 10px */
+  right: 10px;
+  z-index: 1000;
+  pointer-events: none;
+  background: transparent;
+  border-radius: 4px;
+  padding: 0;
+  box-shadow: none;
+}
+
+.export-scale-bar {
+  position: absolute;
+  bottom: 10px;
+  right: 10px;
+  z-index: 1000;
+  pointer-events: none;
+  background: rgba(255, 255, 255, 0.95) !important;
+  border-radius: 4px;
+  padding: 10px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+  min-width: 150px;
+  display: block !important;
+  visibility: visible !important;
+  opacity: 1 !important;
+}
+
+.scale-bar-container {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 6px;
+}
+
+.scale-bar-text {
+  font-size: 12px;
+  font-weight: bold;
+  color: #333;
+  white-space: nowrap;
+  margin-bottom: 4px;
+}
+
+.scale-bar-graphical {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  width: 100%;
+}
+
+.scale-bar-line {
+  height: 4px;
+  background-color: #333;
+  border-top: 1px solid #fff;
+  border-bottom: 1px solid #fff;
+  margin-bottom: 4px;
+  min-width: 80px;
+}
+
+.scale-bar-label {
+  font-size: 11px;
+  font-weight: bold;
+  color: #333;
+  white-space: nowrap;
+}
+
+.export-legend {
+  position: absolute;
+  bottom: 100px;  /* Moved up to avoid overlap with scale bar */
+  right: 10px;
+  z-index: 1000;
+  pointer-events: none;
+  background: rgba(255, 255, 255, 0.95);
+  border-radius: 4px;
+  padding: 10px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+  max-width: 200px;
+  font-size: 12px;
+}
+
+.legend-title {
+  font-weight: bold;
+  margin-bottom: 8px;
+  color: #333;
+  border-bottom: 1px solid #ddd;
+  padding-bottom: 4px;
+}
+
+.legend-item {
+  display: flex;
+  align-items: center;
+  margin-bottom: 6px;
+}
+
+.legend-symbol {
+  width: 20px;
+  height: 16px;
+  margin-right: 8px;
+  flex-shrink: 0;
+}
+
+.legend-marker {
+  border-radius: 50%;
+  width: 12px;
+  height: 12px;
+  margin-right: 12px;
+}
+
+.legend-polygon {
+  border: 2px solid;
+  border-radius: 2px;
+}
+
+.legend-line {
+  height: 3px;
+}
+
+.legend-label {
+  color: #333;
+  flex: 1;
+}
 
 
 
