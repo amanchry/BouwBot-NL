@@ -183,20 +183,11 @@ BouwBot NL includes an automated test suite implemented using **pytest** to ensu
 
 The tests cover:
 
-- **Session management**  
-  Initialization and reset of chat and map state.
-
-- **API behavior**  
-  Validation of REST endpoints (`/api/chat`, `/api/reset`) and error handling.
-
-- **Tool dispatch system**  
-  Correct routing and execution of registered geospatial tools.
-
-- **Input validation**  
-  Boundary checks for buffer radius and coordinate inputs.
-
-- **Geospatial analysis (integration tests)**  
-  Building-data tests using the Utrecht 3DBAG subset to validate:
+- **Session management** : Initialization and reset of chat and map state.
+- **API behavior** : Validation of REST endpoints (`/api/chat`, `/api/reset`) and error handling.
+- **Tool dispatch system**: Correct routing and execution of registered geospatial tools.
+- **Input validation**: Boundary checks for buffer radius and coordinate inputs.
+- **Geospatial analysis (integration tests)**: Building-data tests using the Utrecht 3DBAG subset to validate:
   - Building selection within buffers
   - Height-based filtering
   - Statistical aggregations (min/avg/max)
@@ -204,9 +195,7 @@ The tests cover:
 
 Tests that depend on building data are automatically skipped if the dataset is not available, ensuring portability.
 
-### Run All Tests
-
-**From the project root:**
+** Run All Tests (From the project root):**
 ```
 pytest tests/ -v
 ```
