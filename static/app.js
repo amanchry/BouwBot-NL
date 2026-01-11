@@ -946,12 +946,16 @@ function createLegend() {
     // Group features by layerName
     const layerGroups = {};
     backendFeatures.forEach(f => {
-      const layerName = f.get("layerName") || "Unknown";
-      const geomType = f.getGeometry().getType();
+      const layerName = f.get("layerName");
+      if(layerName){
+        const geomType = f.getGeometry().getType();
       if (!layerGroups[layerName]) {
         layerGroups[layerName] = { geomType, count: 0 };
       }
       layerGroups[layerName].count++;
+
+      }
+      
     });
     
     Object.keys(layerGroups).forEach(layerName => {

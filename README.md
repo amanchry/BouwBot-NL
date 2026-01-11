@@ -177,8 +177,39 @@ Documentation: https://openlayers.org/
 
 ## 5) Testing
 
+BouwBot NL includes an automated test suite implemented using **pytest** to ensure reliability, correctness, and reproducibility of the system.
 
+### Test Coverage
 
+The tests cover:
+
+- **Session management**  
+  Initialization and reset of chat and map state.
+
+- **API behavior**  
+  Validation of REST endpoints (`/api/chat`, `/api/reset`) and error handling.
+
+- **Tool dispatch system**  
+  Correct routing and execution of registered geospatial tools.
+
+- **Input validation**  
+  Boundary checks for buffer radius and coordinate inputs.
+
+- **Geospatial analysis (integration tests)**  
+  Building-data tests using the Utrecht 3DBAG subset to validate:
+  - Building selection within buffers
+  - Height-based filtering
+  - Statistical aggregations (min/avg/max)
+  - GeoJSON export correctness
+
+Tests that depend on building data are automatically skipped if the dataset is not available, ensuring portability.
+
+### Run All Tests
+
+**From the project root:**
+```
+pytest tests/ -v
+```
 
 ## License
 

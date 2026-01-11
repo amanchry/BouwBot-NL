@@ -41,7 +41,7 @@ html, body {
 /* Chat message layout */
 #chatMessages {
   overflow-y: auto;
-  height:600px;
+  height:500px;
 }
 /* Wrapper for each message */
 .chat-user {
@@ -167,13 +167,13 @@ html, body {
 
 .export-scale-bar {
   position: absolute;
-  bottom: 10px;
+  bottom: 25px;
   right: 10px;
   z-index: 1000;
   pointer-events: none;
   background: rgba(255, 255, 255, 0.95) !important;
   border-radius: 4px;
-  padding: 10px;
+  padding: 5px;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
   min-width: 150px;
   display: block !important;
