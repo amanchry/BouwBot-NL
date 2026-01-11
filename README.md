@@ -179,7 +179,6 @@ Documentation: https://openlayers.org/
 
 BouwBot NL includes an automated test suite implemented using **pytest** to ensure reliability, correctness, and reproducibility of the system.
 
-### Test Coverage
 The tests cover:
 - **Session management** : Initialization and reset of chat and map state.
 - **API behavior** : Validation of REST endpoints (`/api/chat`, `/api/reset`) and error handling.
