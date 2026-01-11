@@ -12,7 +12,7 @@ static/data/*.zip
 .DS_Store
 Thumbs.db
 .ipynb_checkpoints/
-output/*.geojson
+
 __pycache__
 
 tools/__pycache__
