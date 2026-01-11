@@ -192,7 +192,7 @@ The tests cover:
 
 Tests that depend on building data are automatically skipped if the dataset is not available, ensuring portability.
 
-** Run All Tests (From the project root):**
+**Run All Tests (From the project root):**
 ```
 pytest tests/ -v
 ```
